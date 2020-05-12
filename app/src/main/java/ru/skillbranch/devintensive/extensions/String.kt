@@ -21,6 +21,7 @@ fun String.truncate (count :Int = 16):String {
 
 fun String.stripHtml ():String {
     var result = Regex("""<.*?>|&amp;|&lt;|&gt;|&quot;|&#.\d?;""").replace(this, "")
+//    var result = Regex("""<.*?>|&.*?;|&#.\d?;""").replace(this, "")
 
     result = Regex("""\s+""").replace(result," ")
 

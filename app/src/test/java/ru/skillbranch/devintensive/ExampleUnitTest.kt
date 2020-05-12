@@ -11,49 +11,29 @@ import java.util.*
 
 class ExampleUnitTest {
     @Test
-    fun makeMessageTest(){
-        @Test
-        fun makeUserTest(){
-            assertEquals(User("0", "Иван", "Кузьмин").firstName, User.makeUser("Иван Кузьмин").firstName)
-            assertEquals(User("0", "Иван", "Кузьмин").lastName, User.makeUser("Иван Кузьмин").lastName)
-        }
+    fun stripHtmlTest() {
+        /* skillBranch tests */
+        assertEquals("Образовательное IT-сообщество Skill Branch",
+            "<p class=\"title\">Образовательное IT-сообщество Skill Branch</p>".stripHtml())
+        assertEquals("Образовательное IT-сообщество Skill Branch",
+            "<p>Образовательное       IT-сообщество Skill Branch</p>".stripHtml())
 
-        @Test
-        fun builderTest(){
-            val date = Date()
-
-            val user1 = User(
-                "5",
-                "Никола",
-                "Тесла",
-                null,
-                0,
-                1000,
-                date.add(-2, TimeUnits.DAY),
-                false)
-
-            val user2 = User.Builder().id("5")
-                .firstName("Никола")
-                .lastName("Тесла")
-                .avatar(null)
-                .rating(0)
-                .respect(1000)
-                .lastVisit(date.add(-2, TimeUnits.DAY))
-                .isOnline(false)
-                .build()
-
-            val user3 = User.Builder().build()
-
-            assertEquals(user1, user2)
-            assertTrue(user3 is User)
-            assertNotEquals(null, user3.id)
-            assertEquals(null, user3.firstName)
-            assertEquals(null, user3.lastName)
-            assertEquals(null, user3.avatar)
-            assertEquals(0, user3.rating)
-            assertEquals(0, user3.respect)
-            assertNotEquals(null, user3.lastVisit)
-            assertFalse(user3.isOnline)
-        }
+        /* additional tests */
+        assertEquals("single", "&amp;&lt;&gt;single&#39;&quot;".stripHtml())
+        assertEquals("", "&amp;&lt;&gt;&#39;&quot;".stripHtml())
+        assertEquals(" ", "&amp;&lt;&gt;    &#39;&quot;".stripHtml())
+        assertEquals("1978", "<path fill=\"Color\" d=\"M11.63 10z\"></svg><span>1978</span>".stripHtml())
+        assertEquals("", "&gt;<head>&#39;&quot;</head>".stripHtml())
+        assertEquals(" ", "&gt;<head> &quot; </head>".stripHtml())
+        assertEquals("&игра; amp lt &gt 39; meters ()quot;", "&игра; amp lt &gt 39; meters ()quot;".stripHtml())
+        assertEquals(" one two ", "  one   two ".stripHtml())
+        assertEquals("null", "null".stripHtml())
+        val longHtml = """
+            <TD valign="top" style="padding-bottom:15px;"> <b>line1<b> </TD>
+            <TD valign="top"> <span class="HeadTitleNews"> line2</span>
+            <img src='http://2011WaterpoloF.jpg' >
+            <div style="margin: 0in 0in 0pt">line3</div>
+        """.trimIndent()
+        assertEquals(" line1 \n line2\n\nline3", longHtml.stripHtml())
     }
 }
