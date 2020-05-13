@@ -17,10 +17,10 @@ class Bender (var status:Status = Status.NORMAL,var question:Question = Question
     fun listenAnswer(answer:String):Pair<String,Triple<Int,Int,Int>>{
         Log.d("M_Bender",">!$answer")
 
-       if ( question == Question.NAME && answer[0].isLowerCase())
+       if ( question == Question.NAME && (answer == "" || answer[0].isLowerCase() || !answer[0].isLetter()))
            return "Имя должно начинаться с заглавной буквы\n${question.question}" to status.color
 
-       if ( question == Question.PROFESSION && (!answer[0].isLetter() || answer[0].isUpperCase()))
+       if ( question == Question.PROFESSION && (!answer[0].isLetter() || answer[0].isUpperCase() || answer == ""))
            return "Профессия должна начинаться со строчной буквы\n${question.question}" to status.color
 
         if ( question == Question.MATERIAL && answer.contains(Regex("[0-9]+")))
