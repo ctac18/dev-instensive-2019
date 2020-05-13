@@ -31,7 +31,20 @@ lateinit var benderObj:Bender
         messageEt = et_message
         sendBtn = iv_send
 
-        messageEt.setOnEditorActionListener { v, actionId, event ->
+
+        sendBtn.setOnClickListener {
+            Log.d("M_MainActivity","Click")
+            if(it.id == R.id.iv_send){
+               val(phrase,color) = benderObj.listenAnswer((messageEt.text.toString()))
+                messageEt.setText("")
+                val(r,g,b) = color
+                benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
+                textTxt.text = phrase
+                hideKeyboard()
+            }
+        }
+
+        et_message.setOnEditorActionListener() { v, actionId, event ->
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 val(phrase,color) = benderObj.listenAnswer((messageEt.text.toString()))
                 messageEt.setText("")
@@ -42,17 +55,6 @@ lateinit var benderObj:Bender
                 true
             } else {
                 false
-            }
-        }
-        sendBtn.setOnClickListener {
-            Log.d("M_MainActivity","Click")
-            if(it.id == R.id.iv_send){
-               val(phrase,color) = benderObj.listenAnswer((messageEt.text.toString()))
-                messageEt.setText("")
-                val(r,g,b) = color
-                benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
-                textTxt.text = phrase
-                hideKeyboard()
             }
         }
 
